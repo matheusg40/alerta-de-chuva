@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previsão de Chuva</title>
+    <script>
+        async function verificarChuva() {
+            const cidade = document.getElementById('cidade').value;
+            const response = await fetch('/previsao_chuva', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({'cidade': cidade})
+            });
+            const data = await response.json();
+            if (response.ok) {
+                if (data.probabilidade_chuva > 0) {
+                    alert(`ALERTA: A probabilidade de chuva em ${data.cidade} no momento é de ${data.probabilidade_chuva}%`);
+                } else {
+                    alert(`Não há previsão de chuva em ${data.cidade} no momento.`);
+                }
+            } else {
+                alert(data.error);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Previsão de Chuva</h1>
+    <form onsubmit="event.preventDefault(); verificarChuva();">
+        <label for="cidade">Cidade:</label>
+        <input type="text" id="cidade" name="cidade" required>
+        <button type="submit">Verificar</button>
+    </form>
+</body>
+</html>
