@@ -19,7 +19,6 @@ def obter_cidade_por_cep(cep):
 def obter_dados_meteorologicos(cep):
     cidade = obter_cidade_por_cep(cep)
     if cidade:
-        # Chave da API obscurecida
         api_key_parts = ["b2daa", "4c01aae1d0f", "438f1b5a", "20e00507"]
         api_key = "".join(api_key_parts)
 
@@ -50,8 +49,10 @@ def previsao_chuva():
     if cep:
         dados = obter_dados_meteorologicos(cep)
         if dados:
+            temperatura = dados.get('main', {}).get('temp')
+            descricao_clima = dados.get('weather', [{}])[0].get('description')
             probabilidade_chuva = obter_probabilidade_chuva(dados)
-            return jsonify({'cidade': dados['name'], 'probabilidade_chuva': probabilidade_chuva})
+            return jsonify({'cidade': dados['name'], 'probabilidade_chuva': probabilidade_chuva, 'temperatura': temperatura, 'descricao': descricao_clima})
         else:
             return jsonify({'error': 'Não foi possível obter os dados meteorológicos.'}), 500
     else:
