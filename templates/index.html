@@ -6,13 +6,13 @@
     <title>Previsão de Chuva</title>
     <script>
         async function verificarChuva() {
-            const cidade = document.getElementById('cidade').value;
+            const cep = document.getElementById('cep').value;
             const response = await fetch('/previsao_chuva', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({'cidade': cidade})
+                body: JSON.stringify({'cep': cep})
             });
             const data = await response.json();
             if (response.ok) {
@@ -30,8 +30,8 @@
 <body>
     <h1>Previsão de Chuva</h1>
     <form onsubmit="event.preventDefault(); verificarChuva();">
-        <label for="cidade">Cidade:</label>
-        <input type="text" id="cidade" name="cidade" required>
+        <label for="cep">CEP:</label>
+        <input type="text" id="cep" name="cep" required>
         <button type="submit">Verificar</button>
     </form>
 </body>
